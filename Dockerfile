@@ -14,4 +14,6 @@ RUN tar -xvf /opt/geckodriver-v0.26.0-linux64.tar.gz -C /opt
 ENV PATH=/opt:$PATH
 ENV DISPLAY=:1
 
+RUN apt install -y htop psmisc
+
 ENTRYPOINT /root/cmd.sh; /bin/bash
