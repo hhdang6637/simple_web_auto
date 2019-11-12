@@ -1,5 +1,6 @@
 # Modules to be imported.
 import sys
+import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
@@ -97,7 +98,7 @@ class facebook_session:
         return True
 
 if __name__ == '__main__':
-    fb = facebook_session("xxx", "xxx")
+    fb = facebook_session(os.environ["FB_USER"], os.environ["FB_PASS"])
 
     if fb.login() != True:
         print("Cannot test login")
