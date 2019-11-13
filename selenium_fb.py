@@ -61,6 +61,7 @@ class facebook_session:
 
         except Exception as e:
             print("An exception occurred: " + str(e))
+            self.driver.save_screenshot("login_error.png")
             return False
         return True
 
@@ -93,6 +94,7 @@ class facebook_session:
 
         except Exception as e:
             print("An exception occurred: " + str(e))
+            self.driver.save_screenshot("logout_error.png")
             return False
 
         return True
