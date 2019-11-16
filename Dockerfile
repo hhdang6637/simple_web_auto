@@ -2,7 +2,7 @@ FROM ubuntu:16.04
 
 RUN sed -i 's/archive/vn\.archive/g' /etc/apt/sources.list
 RUN apt-get update
-RUN apt install python3 python3-pip firefox xvfb bash x11vnc -y
+RUN apt install python3 python3-pip firefox xvfb bash x11vnc browser-plugin-freshplayer-pepperflash -y
 RUN pip3 install selenium
 
 COPY cmd.sh /root
