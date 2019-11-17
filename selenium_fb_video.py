@@ -124,31 +124,33 @@ class facebook_session:
             self.driver.save_screenshot("access_video.png")
 
             # Waiting for video ready
+            WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, "(//button[@data-testid='play_pause_control'])[1]")))
             getStateVideo = self.driver.execute_script(self.RETURN_READY_STATE)
 
-            if facebook_session.waiting_video_ready(self, int(getStateVideo)) == True:
+            if self.waiting_video_ready(int(getStateVideo)):
                 isVideoStart = False
                 current_time = self.driver.execute_script(self.RETURN_CURRENT_TIME)
                 duration = self.driver.execute_script("return document.getElementsByTagName('video')[0].duration")
+                self.driver.find_element_by_xpath("(//button[@data-testid='play_pause_control'])[1]").send_keys(Keys.ENTER)
 
                 # Waiting for video play
-                while current_time < duration:
-                    if int(current_time) > 1:
+                while int(current_time) < int(duration):
+                    self.driver.execute_script('document.getElementsByTagName("video")[0].play()')
+                    if int(current_time) > 0:
                         isVideoStart = True
                         break
                     current_time = self.driver.execute_script(self.RETURN_CURRENT_TIME)
 
                 if isVideoStart:
                     self.driver.execute_script(self.PAUSE_VIDEO)
-                    print("video: save_screenshot video_playing_at_the_begging.png")
-                    self.driver.save_screenshot("video_playing_at_the_begging.png")
+                    print("video: save_screenshot video_playing_at_the_beginning.png")
+                    self.driver.save_screenshot("video_playing_at_the_beginning.png")
 
                     # Video load to the middle
                     self.driver.execute_script("document.getElementsByTagName('video')[0].currentTime = %s" %(int(duration)/2))
                     getStateVideo_at_middle = self.driver.execute_script(self.RETURN_READY_STATE)
 
-                    if facebook_session.waiting_video_ready(self, int(getStateVideo_at_middle)) == True:
-                        # self.driver.execute_script(self.PAUSE_VIDEO)
+                    if self.waiting_video_ready(int(getStateVideo_at_middle)):
                         self.driver.execute_script(self.PLAY_VIDEO)
                         time.sleep(3)
                         print("video: save_screenshot video_playing_at_the_middle.png")
@@ -161,9 +163,9 @@ class facebook_session:
                     self.driver.execute_script("return document.getElementsByTagName('video')[0].currentTime = %s" %(int(duration) - 10))
                     getStateVideo_at_the_end = self.driver.execute_script(self.RETURN_READY_STATE)
 
-                    if facebook_session.waiting_video_ready(self, int(getStateVideo_at_the_end)) == True:
+                    if self.waiting_video_ready(int(getStateVideo_at_the_end)):
                         self.driver.execute_script(self.PAUSE_VIDEO)
-                        time.sleep(1)
+                        time.sleep(3)
                         print("video: save_screenshot video_playing_at_the_end.png")
                         self.driver.save_screenshot("video_playing_at_the_end.png")
                     else:
